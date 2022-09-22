@@ -1,3 +1,4 @@
+const { logger } = require("./config/log.config");
 const express = require("express");
 const documentRoutes = require("./routes/document.routes");
 
@@ -7,5 +8,5 @@ const port = 3000;
 app.use("/documents", documentRoutes);
 
 app.listen(port, () => {
-    console.log(`Server initiated on port ${port}`);
+    logger.info(`Server initiated on port ${port}`);
 });

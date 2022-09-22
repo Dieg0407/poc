@@ -1,4 +1,3 @@
-const express = require("express");
 const { 
     addDocument, 
     deleteDocument, 
@@ -6,12 +5,19 @@ const {
     findDocumentById, 
     updateDocument 
 } = require("../services/document.service");
+const { appendRequestIdentifier, postRequestHandler } = require("./routes.helper");
 
+const express = require("express");
 const router = express.Router();
-router.use(express.json());
 
-router.get("/", async (_req, res) => {
-    res.json(findAllDocuments());
+router.use(express.json());
+router.use(appendRequestIdentifier);
+
+router.get("/", async (req, res, next) => {
+    const documents = findAllDocuments();
+    res.json(documents);
+
+    next();
 });
 
 router.get("/:id", async (req, res) => {
@@ -46,5 +52,7 @@ router.delete("/:id", async (req, res) => {
     res.status(204)
         .send();
 });
+
+router.use(postRequestHandler);
 
 module.exports = router;
