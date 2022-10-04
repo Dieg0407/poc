@@ -20,7 +20,7 @@ router.get("/", async (req, res, next) => {
     next();
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", async (req, res, next) => {
     const { id } = req.params;
     const document = findDocumentById(parseInt(id));
 
@@ -30,27 +30,32 @@ router.get("/:id", async (req, res) => {
         res.status(404)
             .send();
     }
+    next();
 });
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
     addDocument(req.body);
     res.status(201)
         .header("location", `${req.baseUrl}/${req.body.id}`)
         .send();
+    next();
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", async (req, res, next) => {
     const { id } = req.params;
     updateDocument(parseInt(id), req.body);
     res.status(204)
         .send();
+    next();
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async (req, res, next) => {
     deleteDocument(parseInt(id));
     const { id } = req.params;
     res.status(204)
         .send();
+
+    next();
 });
 
 router.use(postRequestHandler);
